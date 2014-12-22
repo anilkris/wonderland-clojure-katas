@@ -59,14 +59,12 @@
 (defn leaves
   "Given a tree of solutions, return the solutions as a list."
   [input]
-  (let [tree (->> input (tree-seq sequential? seq) rest)
-        ;; like flatten, return all of the branches and all of the "leaves"
+  (let [tree (->> input (tree-seq (partial some sequential?) seq) rest)
         ;; unlike flatten, we want lists, not atoms
         ;; but not empty lists, or lists that contain lists
         ;; we make those checks into one predicate so we only have to do one remove pass
-        atom? (complement sequential?)
         has-sequences? (partial some sequential?)
-        solution-predicate (fn [x] (or (atom? x) (empty? x) (has-sequences? x)))]
+        solution-predicate (fn [x] (or (empty? x) (has-sequences? x)))]
     (remove solution-predicate tree)))
 
 (defn solution
