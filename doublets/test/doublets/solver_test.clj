@@ -46,7 +46,8 @@
 (fact "rember removes a word completely from a sequence"
       (rember "derp" '("herp" "derp" "lerp" "derp")) => '("herp" "lerp"))
 
-(def test-solution '("door" "boor" "book" "look" "lock"))
+(def leaves-solution '(("door" "boor" "book" "look" "lock")))
+(def solution-result (first leaves-solution))
 
 (facts "about solutions"
        (fact "if the last item in the path is a neighbor of the solution, it will conj the goal onto the path"
@@ -59,10 +60,10 @@
 
 (facts "about solution"
        (fact "it uses leaves"
-             (leaves '(((("door" "boor" "book" "look" "lock") (())) ()))) => solution)
+             (leaves '(((("door" "boor" "book" "look" "lock") (())) ()))) => leaves-solution)
        (fact "it gives us the answer in the desired format"
              (solution '(((("door" "boor" "book" "look" "lock") (())) ())))
-             => test-solution)
+             => solution-result)
        (fact "it returns the best solution"
              (solution '(("door" "boor" "book" "look" "lock") ("door" "boor" "book" "look" "derp" "lock")))
-             => test-solution))
+             => solution-result))

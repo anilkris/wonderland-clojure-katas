@@ -58,14 +58,11 @@
 
 (defn leaves
   "Given a tree of solutions, return the solutions as a list."
-  [input]
-  (let [tree (->> input (tree-seq (partial some sequential?) seq) rest)
-        ;; unlike flatten, we want lists, not atoms
-        ;; but not empty lists, or lists that contain lists
-        ;; we make those checks into one predicate so we only have to do one remove pass
-        has-sequences? (partial some sequential?)
-        solution-predicate (fn [x] (or (empty? x) (has-sequences? x)))]
-    (remove solution-predicate tree)))
+  [coll]
+  (when-let [s (seq coll)]
+    (if (some sequential? s)
+      (mapcat leaves coll)
+      (list coll))))
 
 (defn solution
   "Given a list of solutions, find the shortest solution."
