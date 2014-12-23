@@ -1,18 +1,36 @@
 (ns wonderland-number.finder-test
   (:require [clojure.test :refer :all]
+            [midje.sweet :refer :all]
             [wonderland-number.finder :refer :all]))
 
-(defn hasAllTheSameDigits? [n1 n2]
-  (let [s1 (set (str n1))
-        s2 (set (str n2))]
-    (= s1 s2)))
+(tabular
+ (fact "wonderland-range is a range that contains only 6 digit numbers"
+       (-> wonderland-range ?fn str count) => 6)
+ ?fn
+ first
+ last)
 
-(deftest test-wonderland-number
-  (testing "A wonderland number must have the following things true about it"
-    (let [wondernum (wonderland-number)]
-      (is (= 6 (count (str (wonderland-number)))))
-      (is (hasAllTheSameDigits? wondernum (* 2 wondernum)))
-      (is (hasAllTheSameDigits? wondernum (* 3 wondernum)))
-      (is (hasAllTheSameDigits? wondernum (* 4 wondernum)))
-      (is (hasAllTheSameDigits? wondernum (* 5 wondernum)))
-      (is (hasAllTheSameDigits? wondernum (* 6 wondernum))))))
+(tabular
+ (fact "hasAllTheSameDigits? works, thanks Gigasquid!"
+       (hasAllTheSameDigits? ?n 1))
+ ?n 1 2 0 36 42)
+
+(fact "about samedigits"
+      (-> #(samedigits % 0)
+          (map '(1 2 3 4 5 6))
+          distinct) => '(true))
+
+(fact "about wonder-predicate"
+      (wonder-predicate 0) => true)
+
+(facts "about wonderland-number"
+       (let [wondernum (wonderland-number)]
+         (fact "it must have 6 digits"
+               (-> wondernum str count) => 6)
+                
+         (tabular 
+          (fact "if you multiply it by 2, 3, 4, 5, or 6, the result should have the same digits (but they may bein a different order)"
+                (hasAllTheSameDigits? wondernum (* ?multiplicand wondernum)) => true)
+          ?multiplicand 2 3 4 5 6)))
+
+
