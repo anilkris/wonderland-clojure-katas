@@ -26,11 +26,17 @@
 (facts "about wonderland-number"
        (let [wondernum (wonderland-number)]
          (fact "it must have 6 digits"
-               (-> wondernum str count) => 6)
-                
+               (-> wondernum str count) => 6)                
          (tabular 
           (fact "if you multiply it by 2, 3, 4, 5, or 6, the result should have the same digits (but they may bein a different order)"
                 (hasAllTheSameDigits? wondernum (* ?multiplicand wondernum)) => true)
-          ?multiplicand 2 3 4 5 6)))
+          ?multiplicand 2 3 4 5 6)
+         (fact "it is found by dividing 1/7"
+               (let [n (-> (/ 1 7) double str)
+                     rrest (comp rest rest)
+                     rn (rrest n)
+                     part (-> (partition 6 rn) distinct first)]
+                 (read-string (apply str part)))
+               => wondernum)))
 
 

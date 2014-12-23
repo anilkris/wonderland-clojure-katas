@@ -16,11 +16,9 @@
 
 (defn wonder-predicate
   [n]
-  (and (samedigits 2 n) ;; this needs some logic programming or some crap dawg
-       (samedigits 3 n)
-       (samedigits 4 n)
-       (samedigits 5 n)
-       (samedigits 6 n)))
+  (let [r (range 2 7)
+        preds (map #(samedigits % n) r)]
+    (= (distinct preds) '(true))))
 
 (defn wonderland-number []
   (->> wonderland-range
