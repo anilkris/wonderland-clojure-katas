@@ -14,12 +14,6 @@
         first alphabet
         last "zabcdefghijklmnopqrstuvwxy"))
 
-(facts "about lookup and numeric-lookup"
-       (fact "numeric-lookup takes a numeric column and a row"
-             (numeric-lookup 18 12) => "e")
-       (fact "lookup works with letters"
-             (lookup "s" "m") => "e"))
-
 (facts "about encode"
        (fact "it can encode give a secret keyword"
              (encode "vigilance" "meetmeontuesdayeveningatseven") => "hmkbxebpxpmyllyrxiiqtoltfgzzv"
